@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Test Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        .quiz-container, .manage-container {
+            width: 80%;
+            max-width: 600px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background: #fff;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .options button:hover {
+            background: #e0e0e0;
+        }
+        .options button.correct {
+            background-color: lightgreen;
+            border-color: green;
+        }
+        .options button.incorrect {
+            background-color: lightcoral;
+            border-color: red;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+        .manage-container input, .manage-container button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz Test</h1>
+    
+    <div class="quiz-container" id="quiz-container">
+        <div class="question" id="question">Savol shu yerda ko'rsatiladi</div>
+        <div class="options" id="options">
+            <!-- Options dynamically added here -->
+        </div>
+        <button id="next-btn" style="display:none; margin-top: 10px;">Keyingi savol</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <div class="manage-container">
+        <h2>Testlarni boshqarish</h2>
+        <input type="text" id="new-question" placeholder="Yangi savolni kiriting">
+        <input type="text" id="option1" placeholder="Variant 1">
+        <input type="text" id="option2" placeholder="Variant 2">
+        <input type="text" id="option3" placeholder="Variant 3">
+        <input type="text" id="option4" placeholder="Variant 4">
+        <input type="number" id="correct-option" placeholder="To'g'ri javob raqami (1-4)">
+        <button id="add-question-btn">Yangi test qo'shish</button>
+    </div>
+
+    <script>
+        let questions = [
+            {
+                question: "1. “O‘zbek tilining sohada qo‘llanishi” fanining maqsadi nima?",
+                options: ["A) Adabiy nutq uslublarini o‘rganish", "B) Tilning ijtimoiy va ilmiy sohalarda qo‘llanishini o‘rganish", "C) Faqat terminologiyani bilish", "D) Imlo qoidalarini mustahkamlash"],
+                answer: 1
+            },
+            {
+                question: "2. Til va tafakkur qanday bog‘liq?",
+                options: ["A) Til tafakkurni to‘liq belgilaydi","B) Tafakkur tilga bog‘liq emas","C) Til tafakkurning asosiy ifodasi hisoblanadi","D) Til tafakkurni buzadi"],
+                answer: 2
+            },
+            {
+                question: "3. Davlat tili tushunchasi qayerda belgilanadi?",
+                options: ["A) Adabiyotlarda","B) Konstitutsiyada","C) Imlo qoidalarida","D) Ma’naviyatga oid kitoblarda"],
+                answer: 1
+            },
+            {
+                question: "4. O‘zbek tilining davlat tili maqomi qachon belgilandi?",
+                options: ["A) 1988-yil","B) 1989-yil","C) 1990-yil","D) 1991-yil"],
+                answer: 1
+            },
+            {
+                question: "5. Yozuvning til uchun ahamiyati qanday?",
+                options: ["A) Tilni ifodalash vositasi","B) Tilga zarar yetkazadi","C) Yozuv va til bir xil tushuncha","D) Faqat tarixiy matnlar uchun kerak"],
+                answer: 0
+            },
+            {
+                question: "6. O‘zbek yozuvlarining ilk bosqichi qaysi?",
+                options: ["A) Kirill yozuvi","B) Arab yozuvi","C) Orxun-Enasoy yozuvlari","D) Lotin yozuvi"],
+                answer: 2
+            },
+            {
+                question: "7. O‘zbek yozuvlari necha bosqichda rivojlandi?",
+                options: ["A) 2","B) 3","C) 4","D) 5"],
+                answer: 2
+            },
+            {
+                question: "8. Kirill yozuviga qachon o‘tildi?",
+                options: ["A) 1929-yil","B) 1940-yil","C) 1991-yil","D) 1993-yil"],
+                answer: 1
+            },
+            {
+                question: "9. Lotin yozuvi qayta tiklangan yil qaysi?",
+                options: ["A) 1989-yil","B) 1991-yil","C) 1993-yil","D) 1995-yil"],
+                answer: 2
+            },
+            {
+                question: "10. Imlo qoidalari nimaga xizmat qiladi?",
+                options: ["A) Til boyligini ko‘rsatishga","B) Fikrni ifodalashga","C) Yozuv va talaffuzni bir xilda ishlatishga","D) Tilning rivojlanishiga to‘sqinlik qiladi"],
+                answer: 2
+            },
+            {
+                question: "11. Nutqning asosiy mezonlari qaysilar?",
+                options: ["A) Ilmiylik, emotsionallik","B) To‘g‘rilik, aniqlik, mantiqiylik, sof til","C) Shevalar va dialektlarning uyg‘unligi","D) Qisqalik va hissiyot"],
+                answer: 1
+            },
+            {
+                question: "12. Nutqiy kompetentlik deganda nimani tushunasiz?",
+                options: ["A) Faqat yozma nutqni rivojlantirishni","B) Nutqning barcha sohalarida to‘g‘ri va aniq fikr bildirish qobiliyatini","C) Tilning adabiy imkoniyatlarini bilish","D) Dialektal so‘zlarni ishlatish"],
+                answer: 1
+            },
+            {
+                question: "13. Kasbiy nutqning asosiy xususiyati nima?",
+                options: ["A) Ko‘p ma’noli so‘zlar ishlatilishi","B) Sohaga oid terminlardan foydalanish","C) Faqat yozma nutqni qamrab olishi","D) Emotsional tilda ifodalanishi"],
+                answer: 1
+            },
+            {
+                question: "14. Verbal muloqotda qanday vositalar ishlatiladi?",
+                options: ["A) Jismoniy imo-ishoralar","B) Til va nutq vositalari","C) Rasm va chizmalar","D) Faqat yozma shakllar"],
+                answer: 1
+            },
+            {
+                question: "15. Noverbal muloqot qaysi vositalar orqali amalga oshiriladi?",
+                options: ["A) Matn va grafikalar","B) Imo-ishoralar va yuz ifodalari","C) Faqat og‘zaki nutq","D) Dialekt va sheva vositalari"],
+                answer: 1
+            },
+            {
+                question: "16. Ilmiy tadqiqotning tarkibiy qismlariga nimalar kiradi?",
+                options: ["A) Fikrlar va hissiyotlar","B) Kirish, asosiy qism, xulosa va adabiyotlar","C) Savollar va javoblar","D) Ko‘chirma va tahlillar"],
+                answer: 1
+            },
+            {
+                question: "17. Annotatsiya qanday matn turi?",
+                options: ["A) Matnning qisqacha mazmunini ifodalaydigan matn","B) Ilmiy maqola shakli","C) Asarning badiiy tavsifi","D) Faqat sitatalar yig‘indisi"],
+                answer: 0
+            },
+            {
+                question: "18. Taqrizning asosiy maqsadi nima?",
+                options: ["A) Matnni qisqartirish","B) Matnni baholash va tahlil qilish","C) Hujjatlarni tartibga solish","D) Tushunchalarni izohlash"],
+                answer: 1
+            },
+            {
+                question: "19. O‘rxun-Enasoy yodgorliklari qaysi tilda yozilgan?",
+                options: ["A) O‘zbek tilida","B) Qadimgi turkiy tilda","C) Fors tilida","D) Arab tilida"],
+                answer: 1
+            },
+            {
+                question: "20. Mahmud Koshg‘ariyning asariga nima nom berilgan?",
+                options: ["A) Muhokamat-ul lug‘atayn","B) Devonu lug‘atit turk","C) Qutadg‘u bilig","D) Hibatul haqoyiq"],
+                answer: 1
+            }
+        ];
+
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const nextButton = document.getElementById("next-btn");
+        const resultElement = document.getElementById("result");
+        const addQuestionBtn = document.getElementById("add-question-btn");
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            resetState();
+            const currentQuestion = questions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.addEventListener("click", () => selectAnswer(index, button));
+                optionsElement.appendChild(button);
+            });
+        }
+
+        function selectAnswer(index, button) {
+            const correctIndex = questions[currentQuestionIndex].answer;
+            if (index === correctIndex) {
+                button.classList.add("correct");
+                score++;
+            } else {
+                button.classList.add("incorrect");
+            }
+
+            Array.from(optionsElement.children).forEach(btn => {
+                btn.disabled = true;
+                if (questions[currentQuestionIndex].options.indexOf(btn.textContent) === correctIndex) {
+                    btn.classList.add("correct");
+                }
+            });
+
+            nextButton.style.display = "block";
+        }
+
+        function resetState() {
+            optionsElement.innerHTML = "";
+            nextButton.style.display = "none";
+            resultElement.textContent = "";
+        }
+
+        nextButton.addEventListener("click", () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        });
+
+        function showResult() {
+            resultElement.textContent = `Sizning natijangiz: ${score} / ${questions.length}`;
+            nextButton.style.display = "none";
+        }
+
+        // Add new question functionality
+        addQuestionBtn.addEventListener("click", () => {
+            const newQuestion = document.getElementById("new-question").value;
+            const option1 = document.getElementById("option1").value;
+            const option2 = document.getElementById("option2").value;
+            const option3 = document.getElementById("option3").value;
+            const option4 = document.getElementById("option4").value;
+            const correctOption = parseInt(document.getElementById("correct-option").value) - 1;
+
+            if (newQuestion && option1 && option2 && option3 && option4 && correctOption >= 0 && correctOption <= 3) {
+                questions.push({
+                    question: newQuestion,
+                    options: [option1, option2, option3, option4],
+                    answer: correctOption
+                });
+                alert("Yangi savol qo'shildi!");
+            } else {
+                alert("Barcha maydonlarni to'g'ri to'ldiring!");
+            }
+        });
+
+        loadQuestion();
+    </script>
+</body>
+</html>
