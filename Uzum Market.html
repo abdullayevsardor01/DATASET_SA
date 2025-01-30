@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzum Market</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .logo h1 {
+            font-size: 24px;
+            color: #6A0DAD;
+            margin: 0;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            margin: 0 20px;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+        .search-bar button {
+            background-color: #6A0DAD;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+        }
+        .top-links {
+            display: flex;
+            align-items: center;
+        }
+        .top-links a {
+            color: #6A0DAD;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .categories {
+            background-color: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        .categories a {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            margin: 0 10px;
+        }
+        .categories a:hover {
+            text-decoration: underline;
+        }
+        .catalog-button {
+            background-color: #6A0DAD;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-left: 20px;
+        }
+        .catalog-menu {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            width: 300px;
+            display: none;
+            z-index: 100;
+        }
+        .catalog-menu.active {
+            display: block;
+        }
+        .catalog-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .catalog-menu li {
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .catalog-menu li:last-child {
+            border-bottom: none;
+        }
+        .catalog-menu li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 14px;
+        }
+        .catalog-menu li a:hover {
+            text-decoration: underline;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            padding: 20px;
+            justify-items: center;
+        }
+        .products-section {
+            margin: 20px;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .product-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 250px;
+            height: 345px;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .product-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        .product-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .product-price {
+            color: #6A0DAD;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .product-installment {
+            color: #666;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="C:\Users\Sardor\OneDrive\Документы\uzum.png" alt="Logo">
+            <h1>Uzum Market</h1>
+        </div>
+        <button class="catalog-button" onclick="toggleCatalog()">Katalog</button>
+        <div class="search-bar">
+            <input type="text" placeholder="Mahsulotlar va turkumlar izlash">
+            <button>Qidiruv</button>
+        </div>
+        <div class="top-links">
+            <a href="#">Kirish</a>
+            <a href="#">Saralangan</a>
+            <a href="#">Savat</a>
+        </div>
+        <div class="catalog-menu" id="catalogMenu">
+            <ul>
+                <li><a href="#">Elektronika</a></li>
+                <li><a href="#">Maishiy texnika</a></li>
+                <li><a href="#">Kiyim</a></li>
+                <li><a href="#">Poyabzallar</a></li>
+                <li><a href="#">Aksessuarlar</a></li>
+                <li><a href="#">Go'zallik va parvarish</a></li>
+                <li><a href="#">Uy-ro'zg'or buyumlari</a></li>
+                <li><a href="#">Sport va hordiq</a></li>
+                <li><a href="#">Bolalar tovarlari</a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="products-section">
+        <div class="section-title">Elektronika</div>
+        <div class="products">
+            <div class="product-card">
+                <img src="https://joybox.uz/wp-content/uploads/2024/11/samsung-galaxy-a16-6128gb-gray.jpg" alt="Mahsulot 1">
+                <div class="product-title">Samsung Galaxy A16</div>
+                <div class="product-installment">152 787 so'm/oyiga</div>
+                <div class="product-price">2 157 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://joybox.uz/wp-content/uploads/2024/09/smartfon-apple-iphone-16-pro-256gb-global-desert-titanium.jpg" alt="Mahsulot 2">
+                <div class="product-title">iPhone 14 Pro</div>
+                <div class="product-installment">300 000 so'm/oyiga</div>
+                <div class="product-price">12 500 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://joybox.uz/wp-content/uploads/2024/01/xiaomi-redmi-note-13-pro-12512gb-lavender-purple.jpg" alt="Mahsulot 3">
+                <div class="product-title">Xiaomi Redmi Note 12</div>
+                <div class="product-installment">120 000 so'm/oyiga</div>
+                <div class="product-price">3 500 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://joybox.uz/wp-content/uploads/2024/05/vivo-x100-16512gb-meteorid-black.jpg" alt="Mahsulot 4">
+                <div class="product-title">Vivo X100</div>
+                <div class="product-installment">250 000 so'm/oyiga</div>
+                <div class="product-price">9 800 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://joybox.uz/wp-content/uploads/2023/02/e6ae5a9dfc4c27ef81974edf545ce768_021323155331.jpeg" alt="Mahsulot 5">
+                <div class="product-title">Realme 10 Pro</div>
+                <div class="product-installment">140 000 so'm/oyiga</div>
+                <div class="product-price">3 800 000 so'm</div>
+            </div>
+        </div>
+    </div>
+    <div class="products-section">
+        <div class="section-title">Kiyimlar</div>
+        <div class="products">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/280x280" alt="Kiyim 1">
+                <div class="product-title">Ayollar ko'ylagi</div>
+                <div class="product-installment">50 000 so'm/oyiga</div>
+                <div class="product-price">500 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/280x280" alt="Kiyim 2">
+                <div class="product-title">Erkaklar kostyumi</div>
+                <div class="product-installment">100 000 so'm/oyiga</div>
+                <div class="product-price">1 200 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/280x280" alt="Kiyim 3">
+                <div class="product-title">Bolalar futbolkasi</div>
+                <div class="product-installment">30 000 so'm/oyiga</div>
+                <div class="product-price">300 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/280x280" alt="Kiyim 4">
+                <div class="product-title">Ayollar sport kiyimi</div>
+                <div class="product-installment">80 000 so'm/oyiga</div>
+                <div class="product-price">800 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/280x280" alt="Kiyim 5">
+                <div class="product-title">Erkaklar kurtkasi</div>
+                <div class="product-installment">150 000 so'm/oyiga</div>
+                <div class="product-price">1 500 000 so'm</div>
+            </div>
+        </div>
+    </div>
+    <div class="products-section">
+        <div class="section-title">Sport mahsulotlari</div>
+        <div class="products">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/280x280" alt="Sport 1">
+                <div class="product-title">Velosiped</div>
+                <div class="product-installment">200 000 so'm/oyiga</div>
+                <div class="product-price">2 500 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/280x280" alt="Sport 2">
+                <div class="product-title">Tennis raketkasi</div>
+                <div class="product-installment">60 000 so'm/oyiga</div>
+                <div class="product-price">700 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/280x280" alt="Sport 3">
+                <div class="product-title">Futbol to'pi</div>
+                <div class="product-installment">20 000 so'm/oyiga</div>
+                <div class="product-price">200 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/280x280" alt="Sport 4">
+                <div class="product-title">Yoga matosi</div>
+                <div class="product-installment">15 000 so'm/oyiga</div>
+                <div class="product-price">150 000 so'm</div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/280x280" alt="Sport 5">
+                <div class="product-title">Trenajyor</div>
+                <div class="product-installment">300 000 so'm/oyiga</div>
+                <div class="product-price">3 000 000 so'm</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function toggleCatalog() {
+            const catalogMenu = document.getElementById('catalogMenu');
+            catalogMenu.classList.toggle('active');
+        }
+    </script>
+    
+</body>
+</html>
