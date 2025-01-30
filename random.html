@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .random-number {
+            margin-top: 20px;
+            font-size: 100px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        function startRandomGeneration() {
+            const maxNumberInput = document.getElementById('max-number');
+            const randomNumberDisplay = document.getElementById('random-number');
+
+            const maxNumber = parseInt(maxNumberInput.value);
+            if (isNaN(maxNumber) || maxNumber <= 0) {
+                alert('Please enter a valid positive number.');
+                return;
+            }
+
+            let interval;
+            let endTime = Date.now() + 1000; // 2 seconds from now
+
+            function generateRandomNumber() {
+                const random = Math.floor(Math.random() * maxNumber) + 1;
+                randomNumberDisplay.textContent = random;
+
+                if (Date.now() > endTime) {
+                    clearInterval(interval); // Stop the interval after 2 seconds
+                }
+            }
+
+            interval = setInterval(generateRandomNumber, 0.1); // Update every millisecond
+        }
+    </script>
+
+    <div class="container">
+        <div class="random-number" id="random-number">---</div>
+        <h1>Random Generator</h1>
+        <label for="max-number">Raqam kiriting:</label>
+        <input type="number" id="max-number" placeholder="Enter max number">
+        <button onclick="startRandomGeneration()">Start</button>
+        
+    </div>
+
+    
+</body>
+</html>
